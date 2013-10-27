@@ -1,4 +1,4 @@
-log.st.distr.retune<-function(p, beta, pos, X, y, m, verbose=FALSE)
+log.st.distr.retune<-function(p, beta, pos, X, y, m, sigma.factor, verbose=FALSE)
 {
   n<-length(y)
   beta<-as.matrix(beta)
@@ -79,7 +79,7 @@ log.st.distr.retune<-function(p, beta, pos, X, y, m, verbose=FALSE)
   }
   
   log.prob.y.given.beta<-(y %*% log.logit.inv) + ((m-y) %*% log.one.minus.logit.inv)
-  log.prob.beta.cond<-(-1/2)*(beta[[pos]])^2
+  log.prob.beta.cond<-(-1/2)*sigma.factor*(beta[[pos]])^2
   log.pi<-log.prob.y.given.beta + log.prob.beta.cond
   
   return(log.pi)

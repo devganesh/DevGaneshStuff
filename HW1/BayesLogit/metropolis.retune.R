@@ -1,4 +1,4 @@
-metropolis.retune<-function(p, beta, pos, num.accepts, sd, X, y, m, verbose=FALSE)
+metropolis.retune<-function(p, beta, pos, num.accepts, sd, X, y, m, sigma.factor, verbose=FALSE)
 {
   #proposal distribution mean with SD 'v'
   beta.t<-beta[[pos]]
@@ -16,10 +16,10 @@ metropolis.retune<-function(p, beta, pos, num.accepts, sd, X, y, m, verbose=FALS
   }
   
   beta[[pos]]<-beta.propose  
-  log.pi.beta.propose<-log.st.distr.retune(p, beta, pos, X, y, m, verbose=FALSE)
+  log.pi.beta.propose<-log.st.distr.retune(p, beta, pos, X, y, m, sigma.factor, verbose=FALSE)
   
   beta[[pos]]<-beta.t
-  log.pi.beta.original<-log.st.distr.retune(p, beta, pos, X, y, m, verbose=FALSE)
+  log.pi.beta.original<-log.st.distr.retune(p, beta, pos, X, y, m, sigma.factor, verbose=FALSE)
   
   if(verbose)
   {

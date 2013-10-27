@@ -1,6 +1,10 @@
 bayes.logreg<-function(p, m, y, X, beta.0, sigma.0.inv, niter=15000, burnin=5000, print.every=1000, retune=500, verbose=FALSE, file.num)
 {
 
+
+#diagonal element of sigma matrix for prior
+sigma.factor<-sigma.0.inv[1,1]
+  
 #marg posterior distribitons for all coordinates
 marg.post.distr<-0
 
@@ -46,7 +50,7 @@ for(i in 1:niter)
   
   for(pos in 1:p)
   {    
-    result<- metropolis.retune(p, beta, pos, num.accepts[[pos]], sds[[pos]], X, y, m, verbose=FALSE)
+    result<- metropolis.retune(p, beta, pos, num.accepts[[pos]], sds[[pos]], X, y, m, sigma.factor, verbose=FALSE)
     
     beta[[pos]]<-result[[1]]
     num.accepts[[pos]]<-result[[2]]

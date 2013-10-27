@@ -33,25 +33,25 @@ print(args)
 # sim_start ==> Lowest simulation number to be analyzed by this particular batch job
 ###
 
-# #######################
-# sim_start <- 1000
-# length.datasets <- 200
-# #######################
-# 
-# if (length(args)==0){
-#   sinkit <- FALSE
-#   sim_num <- sim_start + 1
-#   set.seed(1330931)
-# } else {
-#   # Sink output to file?
-#   sinkit <- TRUE
-#   # Decide on the job number, usually start at 1000:
-#   sim_num <- sim_start + as.numeric(args[1])
-#   # Set a different random seed for every job number!!!
-#   set.seed(762*sim_num + 1330931)
-# }
+#######################
+sim_start <- 1000
+length.datasets <- 200
+#######################
 
-# Simulation datasets numbered 1001-1200
+if (length(args)==0){
+  sinkit <- FALSE
+  sim_num <- sim_start + 1
+  set.seed(1330931)
+} else {
+  # Sink output to file?
+  sinkit <- TRUE
+  # Decide on the job number, usually start at 1000:
+  sim_num <- sim_start + as.numeric(args[1])
+  # Set a different random seed for every job number!!!
+  set.seed(762*sim_num + 1330931)
+}
+
+#Simulation datasets numbered 1001-1200
 
 ########################################################################################
 ########################################################################################
@@ -76,6 +76,9 @@ dataset<-read.csv(input.file.path)
 y<-dataset[["y"]]
 m<-dataset[["n"]]
 X<-as.matrix(subset(dataset, select=X1:X2))
+
+#reset seed to random one
+rm(.Random.seed, envir=globalenv())
 
 bayes.logreg(p, m, y, X, beta.0, sigma.0.inv, niter=15000, burnin=5000, print.every=1000, retune=500, verbose=FALSE, file.num)
 
