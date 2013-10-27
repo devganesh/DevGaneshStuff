@@ -1,14 +1,14 @@
 #to clear screen
 cat("\014")
 
-setwd("~/Desktop/STA250/HW1/")
+setwd("~/Desktop/STA250/DevGaneshStuff/HW1/BayesLogit")
 source("log.st.distr.retune.R")
 source("metropolis.retune.R")
 source("bayes.log.reg.retune.R")
 
 #reading in from dataset
-true.beta<-read.csv("Sample datasets/blr_pars_1001.csv")
-dataset<-read.csv("Sample datasets/blr_data_1001.csv")
+true.beta<-read.csv("sample_datasets/blr_pars_1002.csv")
+dataset<-read.csv("sample_datasets/blr_data_1002.csv")
 
 #readying function inputs from dataset
 y<-dataset[["y"]]
