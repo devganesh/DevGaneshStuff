@@ -1,7 +1,8 @@
-bayes.logreg<-function(p, m, y, X, beta.0, sigma.0.inv, niter=15000, burnin=5000, print.every=1000, retune=500, verbose=FALSE, file.num)
+bayes.log.reg.retune<-function(p, m, y, X, beta.0, sigma.0.inv, niter=15000, burnin=5000, print.every=1000, retune=500, verbose=FALSE)
 {
 
-#marg posterior distribitons for all coordinates
+
+#marginal posterior distribitons for all coordinates
 marg.post.distr<-0
 
 #percentiles of marginals for all coordinates
@@ -112,12 +113,11 @@ for(i in 1:niter)
 
 marg.post.distr<-marg.post.distr[1:2,2:(niter-burnin+1)]
 
-output.file.name<-paste("blr_res_",as.character(file.num),".csv", sep="")
-output.file.path<-paste("results/",output.file.name, sep="")
-
 percentiles.marg<-apply(marg.post.distr,1,quantile,probs=seq(.01,.99,.01))
 
-write.table(percentiles.marg, output.file.path, sep=",", row.names = FALSE, col.names = FALSE)
+write.table(percentiles.marg, file="quantiles.csv",sep=",",row.names = FALSE, col.names = FALSE)
+
+   
 
  
  if(verbose)

@@ -1,5 +1,5 @@
-#to clear screen
-cat("\014")
+# #to clear screen
+# cat("\014")
 
 source("log.st.distr.retune.R")
 source("metropolis.retune.R")
