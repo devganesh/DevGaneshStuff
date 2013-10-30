@@ -1,4 +1,9 @@
-bayes.logreg.q3<-function(p, m, y, X, beta.0, sigma.0.inv, niter=15000, burnin=5000, print.every=1000, retune=500, verbose=FALSE, file.num)
+#this function does a BLR fit for a given dataset
+
+
+#Note:  the if(verbose) clauses are purely for debugging
+
+bayes.logreg.q3<-function(p, m, y, X, beta.0, sigma.0.inv, niter=15000, burnin=5000, print.every=1000, retune=500, verbose=FALSE)
 {
 
 
@@ -49,16 +54,15 @@ for(i in 1:niter)
     print(beta)    
   }
   
+  #runs the metropolis-hastings sampling for each beta coordinate
   for(pos in 1:p)
   { 
-    #if(verbose){cat(pos," ")}
     result<- metropolis.retune.q3(p, beta, pos, num.accepts[[pos]], sds[[pos]], X, y, m, sigma.factor, verbose=FALSE)
     
     beta[[pos]]<-result[[1]]
     num.accepts[[pos]]<-result[[2]]
   }
   
-  #if(verbose){cat("metropolis done")}
   
   #retuning during the burnin period
   if((i <= burnin) && (i %% retune == 0))
@@ -67,7 +71,7 @@ for(i in 1:niter)
     k<-i/retune
     for(j in 1:p)
     {
-      #if done retuning, then leave SD as it is
+      #if done retuning, then leave SD as it is and goto the next coordinate
       if(retune.done[[j]])
       {
         next
@@ -106,10 +110,12 @@ for(i in 1:niter)
       cat("\n")
       
     }
+    # resets the num.accepts variable for the next 500 iterations of the burin period
     num.accepts<-rep(0, p)
     
   }
     
+  #store the MC for each beta coordinate, once past the burnin period
   if(i>burnin)
   {
     marg.post.distr<-cbind(marg.post.distr, beta)
@@ -118,16 +124,9 @@ for(i in 1:niter)
     
 }
 
+#the first index marg.post.distr. has a dummy value, so we discard it
 marg.post.distr<-marg.post.distr[1:p,2:(niter-burnin+1)]
 
-output.file.name<-paste("blr_res_",as.character(file.num),".csv", sep="")
-output.file.path<-paste("results/",output.file.name, sep="")
-
-percentiles.marg<-apply(marg.post.distr,1,quantile,probs=seq(.01,.99,.01))
-
-write.table(percentiles.marg, output.file.path, sep=",", row.names = FALSE, col.names = FALSE)
-
- 
  if(verbose)
  {
    cat("marg.post.distr = \n")

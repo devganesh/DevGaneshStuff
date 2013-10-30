@@ -1,6 +1,10 @@
+#This function does the metropolis-hastings sampling with the Gibbs iterations of BLR.
+
+#Note:  the if(verbose) clauses are purely for debugging purposes.
+
 metropolis.retune.q3<-function(p, beta, pos, num.accepts, sd, X, y, m, sigma.factor, verbose=FALSE)
 {
-  #proposal distribution mean with SD 'v'
+  #sampling from proposal distribution 
   beta.t<-beta[[pos]]
   beta.propose<-rnorm(1, beta.t, sd)
   
@@ -15,6 +19,7 @@ metropolis.retune.q3<-function(p, beta, pos, num.accepts, sd, X, y, m, sigma.fac
     cat("\n")
   }
   
+  #computing probabilities for the current and proposed values of beta[pos]
   beta[[pos]]<-beta.t
   log.pi.beta.original<-log.st.distr.retune.q3(p, beta, pos, X, y, m, sigma.factor, verbose=FALSE)
   
@@ -34,6 +39,8 @@ metropolis.retune.q3<-function(p, beta, pos, num.accepts, sd, X, y, m, sigma.fac
   
   log.u<-log(runif(1, 0, 1))
   
+  #computing the value of alpha in metropolis-hastings algorithm
+  #Note - logarithms were taken for ease of computation
   log.alpha<-log.pi.beta.propose - log.pi.beta.original
   
   if(verbose)
@@ -51,6 +58,7 @@ metropolis.retune.q3<-function(p, beta, pos, num.accepts, sd, X, y, m, sigma.fac
     cat("\n")
   }
   
+  #checks whether to accept or reject the proposal for beta[pos]
   if(log.u < log.alpha)
   {
    num.accepts<-num.accepts+1

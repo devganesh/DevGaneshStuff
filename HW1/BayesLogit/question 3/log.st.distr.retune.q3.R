@@ -1,3 +1,7 @@
+#this function computes the probabilities needed in the metropolis-hastings sampling technique for a particular coodinate of beta
+
+#Note: the if(verbose) clauses are purely for debugging
+
 log.st.distr.retune.q3<-function(p, beta, pos, X, y, m, sigma.factor, verbose=FALSE)
 {
   n<-length(y)
@@ -26,6 +30,7 @@ log.st.distr.retune.q3<-function(p, beta, pos, X, y, m, sigma.factor, verbose=FA
     cat("\n")
   }
   
+  #computing (x_i)'(beta) for all rows of the dataset
   u<-X %*% beta
   
   if(verbose)
@@ -35,6 +40,7 @@ log.st.distr.retune.q3<-function(p, beta, pos, X, y, m, sigma.factor, verbose=FA
     cat("\n")
   }
   
+ # computing the logit inverse probability for the binomial distribution of the likelihood. 
  logit.inv<-exp(u)/(1+exp(u))
  one.minus.logit.inv<-1-logit.inv 
   
@@ -61,17 +67,15 @@ log.st.distr.retune.q3<-function(p, beta, pos, X, y, m, sigma.factor, verbose=FA
     cat("\n")
   }
   
-#   log.logit.inv<-log(logit.inv)
-#   log.one.minus.logit.inv<-log(one.minus.logit.inv)
-   
-#    log.logit.inv<-u
-#    log.one.minus.logit.inv<-matrix(rep(0,569))
-  
   sum<-0
   
     for(i in 1:(length(y)))
     {
+      # if the probabilities used for the ith row of the dataset are 0, then we skip this row
+      #since we cannot take logarithms of these probabilities
       if((logit.inv[[i]])==0||(one.minus.logit.inv[[i]]==0))    {next }
+      
+      #taking logs of the quatities involved for ease of computation by R
       sum<- sum + y[[i]]*log(logit.inv[[i]]) + (m[[i]]-y[[i]])*log(one.minus.logit.inv[[i]])     
       if(FALSE)
       {
@@ -87,21 +91,15 @@ log.st.distr.retune.q3<-function(p, beta, pos, X, y, m, sigma.factor, verbose=FA
     cat("\n")
   }
   
-  #log.prob.y.given.beta<-(y %*% log.logit.inv) + ((m-y) %*% log.one.minus.logit.inv)
+  #likelihood probability
   log.prob.y.given.beta<-sum
+  #prior probability
   log.prob.beta.cond<-(-1/2)*sigma.factor*(beta[[pos]])^2
+  #posterior probability
   log.pi<-log.prob.y.given.beta + log.prob.beta.cond
   
   if(verbose)
   {
-#     cat("log.logit.inv = \n")
-#     print(t(log.logit.inv))
-#     cat("\n")
-#     
-#     cat("log.one.minus.logit.inv = \n")
-#     print(t(log.one.minus.logit.inv))
-#     cat("\n")
-    
     cat("p(y|beta) = \n")
     print(log.prob.y.given.beta)
     cat("\n")

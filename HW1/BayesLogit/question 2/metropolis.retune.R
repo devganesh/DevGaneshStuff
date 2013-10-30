@@ -1,6 +1,6 @@
 #This function does the metropolis-hastings sampling with the Gibbs iterations of BLR.
 
-#Note:  the if(verbose) clauses are purely for debugging
+#Note:  the if(verbose) clauses are purely for debugging purposes.
 
 metropolis.retune<-function(p, beta, pos, num.accepts, sd, X, y, m, sigma.factor, verbose=FALSE)
 {
@@ -40,6 +40,7 @@ metropolis.retune<-function(p, beta, pos, num.accepts, sd, X, y, m, sigma.factor
   log.u<-log(runif(1, 0, 1))
   
   #computing the value of alpha in metropolis-hastings algorithm
+  #Note - logarithms were taken for ease of computation
   log.alpha<-log.pi.beta.propose - log.pi.beta.original
   
   if(verbose)

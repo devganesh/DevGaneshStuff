@@ -40,7 +40,7 @@ log.st.distr.retune<-function(p, beta, pos, X, y, m, sigma.factor, verbose=FALSE
     cat("\n")
   }
   
-#  computing the logit inverse probability for the binomial distribution of the likelihood.
+# computing the logit inverse probability for the binomial distribution of the likelihood.
 logit.inv<-exp(u)/(1+exp(u))
 one.minus.logit.inv<-1-logit.inv 
   
