@@ -69,7 +69,7 @@ for line in sys.stdin:
         y_hi = float(truncy)
 
     # tab-delimited; the trivial bin count is 1
-    print "%s,%s,%s,%s\t%s" % (x_lo, x_hi, y_lo, y_hi, 1)
+    print "%s,%s,%s,%s\t%s" % (str(x_lo), str(x_hi), str(y_lo), str(y_hi), 1)
 
 
 
