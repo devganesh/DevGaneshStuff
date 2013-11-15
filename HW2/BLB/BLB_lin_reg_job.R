@@ -75,24 +75,6 @@ gamma = 0.7
 n = nrow(full.dataset)
 b = floor(n^gamma)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Extracting subset
 set.seed(s_index)
 sample.rows = sample(1:n, b, replace = FALSE)
