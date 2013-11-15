@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 
-# We borrow with minor modifications the reducer used by Dr.Baines for his bin count example
+# We borrow with minor modifications the reducer used by Dr.Baines for his word count example
 # in lecture.  Since the mapper's key is already in the prescribed format for the reducer's output,
 # the reducer simply counts the number of occurrences of a particular key and then prints -
 # "x_lo,x_hi,y_lo,y_hi,count"
