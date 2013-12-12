@@ -2,7 +2,7 @@ library(RCUDA)
 library(MASS)
 library(truncnorm)
 
-probit_mcmc_gpu = function( n, Z, X, XX,a, b, beta_0, Sigma_0_inv,niter,burnin, 
+probit_mcmc_gpu =function( n, Z, X, XX,a, b, beta_0, Sigma_0_inv,niter,burnin, 
                 maxtries, rng_a, rng_b, block_dims, grid_dims, sd, beta_sample)
 
 {

@@ -2,7 +2,7 @@ library(RCUDA)
 library(MASS)
 library(truncnorm)
 
-probit_mcmc_cpu = function(n, Z, X, XX,a,b,beta_0,Sigma_0_inv,niter,burnin, sd, beta_sample)
+probit_mcmc_cpu =function(n, Z, X, XX,a,b,beta_0,Sigma_0_inv,niter,burnin, sd, beta_sample)
 {
   for(t in 1:(burnin+niter))
   {
