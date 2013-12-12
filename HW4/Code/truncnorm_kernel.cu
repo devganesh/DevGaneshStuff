@@ -20,7 +20,7 @@ float *a, float *b,int rng_a, int rng_b, int rng_c,int maxtries)
   
   if(index>n) return;
 
-  // Rejection sampling 
+  //Rejection sampling 
   while(numtries <= maxtries)
   {
     x[index] = mu[index] + sigma[index]*curand_normal(&rng);
