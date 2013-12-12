@@ -22,6 +22,6 @@ truncnorm=function(rng_a, rng_b, rng_c, maxtries, a, b, N, mu, sigma)
   time_copy_backward <- system.time({time_cuda <- copyFromDevice(mem,mem@nels,type)}))
   cpu_time <- system.time(rtruncnorm(N, a, b, mean = mu, sd = sigma))
   
-  return(c(gpu_time, cpu_time))
+  return(c(gpu_time,cpu_time))
 }
 
