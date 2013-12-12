@@ -12,21 +12,16 @@ truncnorm=function(rng_a, rng_b, rng_c, maxtries, a, b, N, mu, sigma)
   x = rtruncnorm(N, a, b, mean = mu, sd = sigma)
 
   #sampling using GPU
-  threads_per_block <- 512L
-  block_dims <- c(threads_per_block, 1L, 1L)
-  grid_d1 <- as.integer(ceiling(N/threads_per_block))
-  grid_dims <- c(grid_d1, 1L, 1L)
-  nthreads <- prod(grid_dims)*prod(block_dims)
+  block_dim <- c(512L, 1L, 1L)STA 250 - 
+  grid_dim <- c(as.integer(ceiling(N/threads_per_block)), 1L, 1L)
   cudaDeviceSynchronize()
-  cu_time <- system.time({
-  cu_copy_to_time <- system.time({mem <- copyToDevice(x)})
-  cu_kernel_time <- system.time({.cuda(truncnorm_kernel, mem, N, mu, sigma, a, b, rng_a, rng_b, rng_c, maxtries,
-                                       gridDim=gritruncnorm_kerneld_dims, blockDim=block_dims, outputs=NULL)})
-  cu_copy_back_time <- system.time({cu_ret <- copyFromDevice(obj=mem,nels=mem@nels,type)})
-  })
-  cu_kernel2_time <- system.time({y <- .cuda(truncnorm_kernel, x, N, mu, sigma, a, b, rng_a, rng_b, rng_c, maxtries,
-                                           gridDim=grid_dims, blockDim=block_dims, outputs)})
-  r_time <- system.time({r_ret <- rtruncnorm(N, a, b, mean = mu, sd = sigma)})
-  tdiff <- sum(abs(cu_ret - r_ret))
+  gpu_time <- system.time(time_copy_forward <- system.time({mem <- copyToDevice(x)})
+  time_kernel <- system.time(.cuda(truncnorm_kernel, mem, N, mu, sigma, a, b, 
+                                       rng_a, rng_b, rng_c, maxtries,
+                                       grid_dim, block_dim, outputs=NULL))
+  time_copy_backward <- system.time({time_cuda <- copyFromDevice(mem,mem@nels,type)}))
+  cpu_time <- system.time(rtruncnorm(N, a, b, mean = mu, sd = sigma))
+  
+  return(c(gpu_time, cpu_time))
 }
 
