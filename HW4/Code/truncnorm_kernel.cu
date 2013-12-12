@@ -8,7 +8,7 @@ extern "C"
 __global__ void truncnorm_kernel(float *x, int n, float *mu, float *sigma,
 float *a, float *b,int rng_a, int rng_b, int rng_c,int maxtries)
 {
-  //Usual block/thread indexing... 
+  // Usual block/thread indexing... 
   int myblock = blockIndex.x + blockIndex.y * gridDim.x;
   int blocksize = blockDim.x * blockDim.y * blockDim.z;
   int subthread = threadIndex.z*(blockDim.x * blockDim.y) + threadIndex.y*blockDim.x + threadIndex.x;
